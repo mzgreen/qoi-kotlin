@@ -1,0 +1,88 @@
+group GROUP
+version VERSION_NAME
+
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.key"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+ext["sonatypeStagingProfileId"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    // Read local.properties file first if it exists
+    Properties p = new Properties()
+    new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
+    p.each { name, value -> ext[name] = value }
+} else {
+    // Use system environment variables
+    ext["ossrhUsername"] = System.getenv('SONATYPE_NEXUS_USERNAME')
+    ext["ossrhPassword"] = System.getenv('SONATYPE_NEXUS_PASSWORD')
+    ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_NEXUS_STAGING_PROFILE_ID')
+    ext["signing.keyId"] = System.getenv('ARTIFACT_SIGNING_KEY_ID')
+    ext["signing.password"] = System.getenv('ARTIFACT_SIGNING_PASSWORD')
+    ext["signing.key"] = System.getenv('ARTIFACT_SIGNING_PRIVATE_KEY')
+}
+
+// Publish and release with:
+// ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+// Both tasks must be executed in one pass
+// https://github.com/gradle-nexus/publish-plugin/
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            stagingProfileId = sonatypeStagingProfileId
+            username = ossrhUsername
+            password = ossrhPassword
+        }
+    }
+}
+
+publishing {
+    publications.all {
+        artifact(javadocJar)
+        pom {
+            description = POM_DESCRIPTION
+            name = POM_NAME
+            url = POM_URL
+        }
+        pom.licenses {
+            license {
+                name = POM_LICENCE_NAME
+                url = POM_LICENCE_URL
+                distribution = POM_LICENCE_DIST
+            }
+        }
+        pom.scm {
+            url = POM_SCM_URL
+            connection = POM_SCM_CONNECTION
+            developerConnection = POM_SCM_DEV_CONNECTION
+        }
+        pom.developers {
+            developer {
+                id = POM_DEVELOPER_ID
+                name = POM_DEVELOPER_NAME
+            }
+        }
+    }
+}
+
+def isReleaseBuild() {
+    return !VERSION_NAME.contains('SNAPSHOT')
+}
+
+signing {
+    required { isReleaseBuild() }
+    useInMemoryPgpKeys(
+        rootProject.ext["signing.keyId"],
+        rootProject.ext["signing.key"],
+        rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseBuild() }
+}

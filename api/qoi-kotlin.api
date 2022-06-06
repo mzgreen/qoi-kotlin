@@ -1,0 +1,44 @@
+public final class io/github/mzgreen/qoi/kotlin/QOIColorModel : java/lang/Enum {
+	public static final field RGB Lio/github/mzgreen/qoi/kotlin/QOIColorModel;
+	public static final field RGBA Lio/github/mzgreen/qoi/kotlin/QOIColorModel;
+	public final fun getChannels ()I
+	public static fun valueOf (Ljava/lang/String;)Lio/github/mzgreen/qoi/kotlin/QOIColorModel;
+	public static fun values ()[Lio/github/mzgreen/qoi/kotlin/QOIColorModel;
+}
+
+public final class io/github/mzgreen/qoi/kotlin/QOIColorSpace : java/lang/Enum {
+	public static final field LINEAR Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;
+	public static final field SRGB Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;
+	public static fun values ()[Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;
+}
+
+public final class io/github/mzgreen/qoi/kotlin/QOIImage {
+	public fun <init> ([IIILio/github/mzgreen/qoi/kotlin/QOIColorModel;Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColorModel ()Lio/github/mzgreen/qoi/kotlin/QOIColorModel;
+	public final fun getColorSpace ()Lio/github/mzgreen/qoi/kotlin/QOIColorSpace;
+	public final fun getColors ()[I
+	public final fun getHeight ()I
+	public final fun getWidth ()I
+	public fun hashCode ()I
+}
+
+public final class io/github/mzgreen/qoi/kotlin/QOIReader {
+	public fun <init> ()V
+	public fun <init> (Lokio/FileSystem;)V
+	public final fun read (Ljava/lang/String;)Lio/github/mzgreen/qoi/kotlin/QOIImage;
+	public final fun read (Lokio/FileHandle;)Lio/github/mzgreen/qoi/kotlin/QOIImage;
+	public final fun read (Lokio/Path;)Lio/github/mzgreen/qoi/kotlin/QOIImage;
+	public final fun read (Lokio/Source;)Lio/github/mzgreen/qoi/kotlin/QOIImage;
+}
+
+public final class io/github/mzgreen/qoi/kotlin/QOIWriter {
+	public fun <init> ()V
+	public fun <init> (Lokio/FileSystem;)V
+	public final fun write (Lio/github/mzgreen/qoi/kotlin/QOIImage;Ljava/lang/String;)V
+	public final fun write (Lio/github/mzgreen/qoi/kotlin/QOIImage;Lokio/FileHandle;)V
+	public final fun write (Lio/github/mzgreen/qoi/kotlin/QOIImage;Lokio/Path;)V
+	public final fun write (Lio/github/mzgreen/qoi/kotlin/QOIImage;Lokio/Sink;)V
+}
+
