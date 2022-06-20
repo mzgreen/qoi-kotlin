@@ -39,7 +39,20 @@ dependencies {
 Use `QOIReader` to read QOI images from disk:
 
 ```kotlin
+// Read from String path
 val qoiImage: QOIImage = QOIReader().read("image.qoi")
+
+// Read from Okio's Path
+val path: Path = // ...
+val qoiImage: QOIImage = QOIReader().read(path)
+
+// Read from Okio's FileHandle
+val fileHandle: FileHandle = // ...
+val qoiImage: QOIImage = QOIReader().read(fileHandle)
+
+// Read from Okio's Source
+val source: Source = // ...
+val qoiImage: QOIImage = QOIReader().read(source)
 ```
 
 #### Writing QOI images
@@ -48,7 +61,21 @@ Use `QOIWriter` to write QOI images to disk:
 
 ```kotlin
 val qoiImage: QOIImage = // ...
+
+// Write to String path
 QOIWriter().write(qoiImage, "image.qoi")
+
+// Write to Okio's Path
+val path: Path = // ...
+QOIWriter().write(qoiImage, path)
+
+// Write to Okio's FileHandle
+val fileHandle: FileHandle = // ... 
+QOIWriter().write(qoiImage, fileHandle)
+
+// Write to Okio's Sink
+val sink: Sink = // ... 
+QOIWriter().write(qoiImage, sink)
 ```
 
 ## Building the project
