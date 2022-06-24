@@ -39,20 +39,23 @@ dependencies {
 Use `QOIReader` to read QOI images from disk:
 
 ```kotlin
+// Create reader
+val qoiReader = QOIReader()
+
 // Read from String path
-val qoiImage: QOIImage = QOIReader().read("image.qoi")
+val qoiImage: QOIImage = qoiReader.read("image.qoi")
 
 // Read from Okio's Path
 val path: Path = // ...
-val qoiImage: QOIImage = QOIReader().read(path)
+val qoiImage: QOIImage = qoiReader.read(path)
 
 // Read from Okio's FileHandle
 val fileHandle: FileHandle = // ...
-val qoiImage: QOIImage = QOIReader().read(fileHandle)
+val qoiImage: QOIImage = qoiReader.read(fileHandle)
 
 // Read from Okio's Source
 val source: Source = // ...
-val qoiImage: QOIImage = QOIReader().read(source)
+val qoiImage: QOIImage = qoiReader.read(source)
 ```
 
 #### Writing QOI images
@@ -62,20 +65,23 @@ Use `QOIWriter` to write QOI images to disk:
 ```kotlin
 val qoiImage: QOIImage = // ...
 
+// Create writer
+val qoiWriter = QOIWriter()
+
 // Write to String path
-QOIWriter().write(qoiImage, "image.qoi")
+qoiWriter.write(qoiImage, "image.qoi")
 
 // Write to Okio's Path
 val path: Path = // ...
-QOIWriter().write(qoiImage, path)
+qoiWriter.write(qoiImage, path)
 
 // Write to Okio's FileHandle
 val fileHandle: FileHandle = // ... 
-QOIWriter().write(qoiImage, fileHandle)
+qoiWriter.write(qoiImage, fileHandle)
 
 // Write to Okio's Sink
 val sink: Sink = // ... 
-QOIWriter().write(qoiImage, sink)
+qoiWriter.write(qoiImage, sink)
 ```
 
 ## Building the project
